@@ -39,7 +39,7 @@
       initrd = {
         includeDefaultModules = false;
         kernelModules = lib.mkForce [ ];
-        availableKernelModules = lib.mkForce [ "usbhid" "usb_storage" "vc4" "pcie_brcmstb" "sdhci_bcm2835" ];
+        availableKernelModules = lib.mkForce [ "usbhid" "usb_storage" "vc4" "pcie_brcmstb" ];
       };
     };
 
