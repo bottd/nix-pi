@@ -1,0 +1,4 @@
+out/
+.direnv/
+.clj-kondo/
+.lsp/
