@@ -52,7 +52,7 @@
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
-  swapDevices = [ { device = "/swapfile"; size = 2048; } ];
+  swapDevices = [{ device = "/swapfile"; size = 2048; }];
 
   hardware = {
     enableRedistributableFirmware = true;
