@@ -78,7 +78,7 @@ in
     };
 
     # Set parameterized SD image filename based on hostname
-    sdImage.imageName = "${hostName}-pi.img";
+    image.fileName = "${hostName}-pi.img";
 
     nix = {
       settings = {

@@ -17,24 +17,11 @@ jobs:
       - name: Setup nix environment
         uses: nicknovitski/nix-develop@v1
       - name: Build image
-        run: |
-          nix build .#cellar
-
-          # Debug: Show result directory structure
-          echo "=== Result directory structure ==="
-          ls -la result/
-
-          # Debug: Find all .img files
-          echo "=== All .img files in result ==="
-          find result/ -name "*.img*" -type f 2>/dev/null || echo "No .img files found"
-
-          # Debug: Show what files exist
-          echo "=== All files in result ==="
-          find result/ -type f 2>/dev/null || echo "No files found"
+        run: nix build .#cellar
       - name: Upload Pi image artifact
         uses: actions/upload-artifact@v4
         with:
           name: nixos-pi4-cellar-image
-          path: result/**/cellar-pi.img.zst
+          path: result/sd-image/*.img.zst
           retention-days: 30
           compression-level: 0 # Nix already handles compression
