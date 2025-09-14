@@ -15,7 +15,7 @@
   options = {
     hardware.enableRedistributableFirmware = lib.mkOption {
       type = lib.types.bool;
-      default = false;
+      default = true;
     };
     hardware.wirelessRegulatoryDatabase = lib.mkOption {
       type = lib.types.bool;
@@ -29,7 +29,11 @@
       kernelPackages = pkgs.linuxPackages_rpi4;
       kernelParams = [ "console=ttyS0,115200" "console=tty1" "cma=256M" ];
       tmp.cleanOnBoot = true;
-      initrd.includeDefaultModules = false;
+      initrd = {
+        includeDefaultModules = false;
+        kernelModules = lib.mkForce [ ];
+        availableKernelModules = [ "usbhid" "usb_storage" "vc4" ];
+      };
     };
 
     networking.interfaces.eth0.useDHCP = true;
