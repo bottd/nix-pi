@@ -16,12 +16,10 @@
     hardware.enableRedistributableFirmware = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Compatibility option for nixos-hardware module";
     };
     hardware.wirelessRegulatoryDatabase = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Compatibility option for wireless regulatory database";
     };
   };
 
@@ -31,34 +29,23 @@
       kernelPackages = pkgs.linuxPackages_rpi4;
       kernelParams = [ "console=ttyS0,115200" "console=tty1" "cma=256M" ];
       tmp.cleanOnBoot = true;
-      blacklistedKernelModules = [ "sun4i-drm" ];
       initrd.includeDefaultModules = false;
     };
 
-    networking = {
-      useDHCP = false;
-      interfaces.eth0.useDHCP = true;
-    };
+    networking.interfaces.eth0.useDHCP = true;
 
-    time.timeZone = "UTC";
-    i18n.defaultLocale = "en_US.UTF-8";
 
     users.users.pi = {
       isNormalUser = true;
-      home = "/home/pi";
       extraGroups = [ "wheel" ];
-      openssh.authorizedKeys.keys = [ ];
     };
 
     services = {
-      openssh = {
-        enable = true;
-        settings.PermitRootLogin = "no";
-      };
+      openssh.enable = true;
       avahi = {
         enable = true;
         nssmdns4 = true;
-        publish = { enable = true; addresses = true; };
+        publish.enable = true;
       };
     };
 
@@ -69,10 +56,8 @@
     swapDevices = [{ device = "/swapfile"; size = 2048; }];
 
     hardware = {
-      firmware = with pkgs; [
-        linux-firmware
-      ];
-      raspberry-pi."4" = { fkms-3d.enable = false; audio.enable = false; };
+      firmware = [ pkgs.linux-firmware ];
+      raspberry-pi."4".fkms-3d.enable = false;
     };
 
     nix = {
@@ -82,7 +67,7 @@
         substituters = [ "https://nix-community.cachix.org" ];
         trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
       };
-      gc = { automatic = true; dates = "weekly"; options = "--delete-older-than 30d"; };
+      gc.automatic = true;
     };
 
     system.stateVersion = "25.05";
