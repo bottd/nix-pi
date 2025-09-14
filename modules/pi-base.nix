@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs, lib, ... }:
+{ pkgs, nixpkgs, lib, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -24,6 +24,13 @@
   };
 
   config = {
+    assertions = [
+      {
+        assertion = lib.versionAtLeast config.boot.kernelPackages.kernel.version "6.1";
+        message = "Raspberry Pi 4 requires kernel version >= 6.1";
+      }
+    ];
+
     boot = {
       loader = { grub.enable = false; generic-extlinux-compatible.enable = true; };
       kernelPackages = pkgs.linuxPackages_rpi4;
@@ -32,7 +39,7 @@
       initrd = {
         includeDefaultModules = false;
         kernelModules = lib.mkForce [ ];
-        availableKernelModules = [ "usbhid" "usb_storage" "vc4" ];
+        availableKernelModules = lib.mkForce [ "usbhid" "usb_storage" "vc4" "pcie_brcmstb" "sdhci_bcm2835" ];
       };
     };
 
@@ -61,7 +68,10 @@
 
     hardware = {
       firmware = [ pkgs.linux-firmware ];
-      raspberry-pi."4".fkms-3d.enable = false;
+      deviceTree = {
+        enable = true;
+        filter = "*rpi-4-*.dtb";
+      };
     };
 
     nix = {

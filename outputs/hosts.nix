@@ -5,7 +5,6 @@ let
       system = "aarch64-linux";
       specialArgs = { inherit (inputs) nixpkgs; };
       modules = [
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
         ../hosts/cellar/configuration.nix
       ];
     };
@@ -14,7 +13,6 @@ let
       system = "aarch64-linux";
       specialArgs = { inherit (inputs) nixpkgs; };
       modules = [
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
         ../hosts/ward/configuration.nix
       ];
     };
