@@ -13,31 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Free up disk space
-      #   run: |
-      #     # Remove some pre-installed software to make room for the build
-      #     sudo rm -rf /usr/share/dotnet
-      #     sudo rm -rf /usr/local/lib/android
-      #     sudo rm -rf /opt/ghc
-      #     sudo rm -rf /opt/hostedtoolcache/CodeQL
-      #     sudo docker image prune --all --force
-      #     df -h
-
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          # extra_nix_config: |
-          #   system-features = nixos-test benchmark big-parallel kvm
-          #   max-jobs = auto
 
       - name: Setup nix environment
         uses: nicknovitski/nix-develop@v1
       
       - name: Build image
         run: |
-          nix build .#cellar --verbose --extra-platforms aarch64-linux
-          # Check the built image
+          nix build .#cellar
           ls -la result/sd-image/
           IMAGE_PATH=$(ls result/sd-image/*.img | head -1)
           IMAGE_SIZE=$(du -h "$IMAGE_PATH" | cut -f1)

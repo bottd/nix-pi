@@ -6,13 +6,19 @@
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  disabledModules = [ "profiles/all-hardware.nix" "profiles/base.nix" ];
+  disabledModules = [
+    "profiles/all-hardware.nix"
+    "profiles/base.nix"
+    "hardware/all-firmware.nix"
+  ];
 
   boot = {
     loader = { grub.enable = false; generic-extlinux-compatible.enable = true; };
     kernelPackages = pkgs.linuxPackages_rpi4;
     kernelParams = [ "console=ttyS0,115200" "console=tty1" "cma=256M" ];
     tmp.cleanOnBoot = true;
+    blacklistedKernelModules = [ "sun4i-drm" ];
+    initrd.includeDefaultModules = false;
   };
 
   networking = {
