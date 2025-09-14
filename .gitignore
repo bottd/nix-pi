@@ -2,3 +2,4 @@ out/
 .direnv/
 .clj-kondo/
 .lsp/
+.pre-commit-config.yaml
