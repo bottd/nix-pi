@@ -50,7 +50,7 @@
 
   hardware = {
     enableRedistributableFirmware = true;
-    raspberry-pi."4" = { fkms-3d.enable = true; audio.enable = false; };
+    raspberry-pi."4" = { fkms-3d.enable = false; audio.enable = false; };
   };
 
   nix = {
