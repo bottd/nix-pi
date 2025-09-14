@@ -1,53 +1,27 @@
 name: Build Pi Image
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   build-image:
     runs-on: ubuntu-22.04-arm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Setup nix environment
         uses: nicknovitski/nix-develop@v1
-      
       - name: Build image
-        run: |
-          nix build .#cellar
-          ls -la result/sd-image/
-          IMAGE_PATH=$(ls result/sd-image/*.img | head -1)
-          IMAGE_SIZE=$(du -h "$IMAGE_PATH" | cut -f1)
-          echo "Built image: $IMAGE_PATH (size: $IMAGE_SIZE)"
-          
-          # Create a more descriptive filename
-          IMAGE_NAME="nixos-pi4-cellar-$(date +%Y%m%d-%H%M%S).img"
-          cp "$IMAGE_PATH" "$IMAGE_NAME"
-          
-          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
-          echo "IMAGE_PATH=$IMAGE_PATH" >> $GITHUB_ENV
-
-      - name: Compress image
-        run: |
-          echo "Compressing image for faster download..."
-          gzip -9 "$IMAGE_NAME"
-          COMPRESSED_SIZE=$(du -h "${IMAGE_NAME}.gz" | cut -f1)
-          echo "Compressed size: $COMPRESSED_SIZE"
-          echo "COMPRESSED_IMAGE=${IMAGE_NAME}.gz" >> $GITHUB_ENV
-
+        run: nix build .#cellar
       - name: Upload Pi image artifact
         uses: actions/upload-artifact@v4
         with:
           name: nixos-pi4-cellar-image
-          path: ${{ env.COMPRESSED_IMAGE }}
+          path: result/cellar-pi.img.zst
           retention-days: 30
-          compression-level: 0  # Already compressed
+          compression-level: 0 # Nix already handles compression

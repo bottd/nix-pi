@@ -13,6 +13,7 @@
           no-lambda-pattern-names = true;
         };
         statix.enable = true;
+        yamlfmt.enable = true;
       };
     };
 

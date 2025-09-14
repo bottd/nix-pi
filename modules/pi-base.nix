@@ -1,4 +1,7 @@
 { pkgs, nixpkgs, lib, config, ... }:
+let
+  inherit (config.networking) hostName;
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -73,6 +76,9 @@
         filter = "*rpi-4-*.dtb";
       };
     };
+
+    # Set parameterized SD image filename based on hostname
+    sdImage.imageName = "${hostName}-pi.img";
 
     nix = {
       settings = {
