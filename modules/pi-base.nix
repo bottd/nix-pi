@@ -55,7 +55,7 @@
   swapDevices = [{ device = "/swapfile"; size = 2048; }];
 
   hardware = {
-    enableRedistributableFirmware = true;
+    firmware = [ pkgs.raspberrypifw ];
     raspberry-pi."4" = { fkms-3d.enable = false; audio.enable = false; };
   };
 

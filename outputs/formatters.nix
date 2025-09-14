@@ -18,13 +18,16 @@
 
     formatter = config.treefmt.build.wrapper;
 
+    pre-commit.settings.hooks.treefmt.enable = true;
+
     devShells.default = pkgs.mkShell {
       name = "nix-pi-dev";
+      inherit (config.pre-commit.devShell) shellHook;
 
       nativeBuildInputs = with pkgs; [
         config.treefmt.build.wrapper
         git
-      ];
+      ] ++ config.pre-commit.settings.enabledPackages;
     };
   };
 }
