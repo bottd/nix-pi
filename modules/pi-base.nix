@@ -9,11 +9,6 @@ in
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  disabledModules = [
-    "profiles/all-hardware.nix"
-    "profiles/base.nix"
-    "hardware/all-firmware.nix"
-  ];
 
 
   config = {
