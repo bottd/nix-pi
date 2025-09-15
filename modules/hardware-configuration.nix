@@ -7,5 +7,4 @@
 
   swapDevices = [ ];
   powerManagement.cpuFreqGovernor = lib.mkDefault "conservative";
-  networking.useDHCP = lib.mkDefault true;
 }

@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   imports = [ ../../modules/pi-base.nix ];
 
@@ -19,13 +18,5 @@
     allowedUDPPorts = [ 22000 21027 ];
   };
 
-  systemd.services.syncthing.serviceConfig = {
-    MemoryMax = "512M";
-    CPUQuota = "75%";
-  };
-
-  environment.systemPackages = with pkgs; [
-    htop
-    iotop
-  ];
+  systemd.services.syncthing.serviceConfig = { MemoryMax = "512M"; CPUQuota = "75%"; };
 }
