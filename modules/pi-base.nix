@@ -37,7 +37,7 @@ in
     boot = {
       loader = { grub.enable = false; generic-extlinux-compatible.enable = true; };
       kernelPackages = pkgs.linuxPackages_rpi4;
-      kernelParams = [ "console=ttyS0,115200" "console=tty1" "cma=256M" ];
+      kernelParams = [ "console=ttyS0,115200" "console=tty1" "cma=256M" "btbcm.autobaud=n" ];
       tmp.cleanOnBoot = true;
       initrd = {
         includeDefaultModules = false;
@@ -70,10 +70,14 @@ in
     swapDevices = [{ device = "/swapfile"; size = 2048; }];
 
     hardware = {
-      firmware = [ pkgs.linux-firmware ];
+      firmware = [ pkgs.linux-firmware pkgs.raspberrypifw ];
       deviceTree = {
         enable = true;
         filter = "*rpi-4-*.dtb";
+      };
+      bluetooth = {
+        enable = true;
+        powerOnBoot = false;
       };
     };
 
