@@ -20,7 +20,11 @@ in
       initrd.availableKernelModules = [ "usbhid" "usb_storage" "vc4" "pcie_brcmstb" ];
     };
 
-    users.users.pi = { isNormalUser = true; extraGroups = [ "wheel" ]; };
+    users.users.pi = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ];
+      initialPassword = "raspberry";
+    };
 
     services = {
       openssh.enable = true;
