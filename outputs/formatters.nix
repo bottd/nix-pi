@@ -1,6 +1,4 @@
-{ inputs, ... }: {
-  imports = [ inputs.treefmt-nix.flakeModule ];
-
+_: {
   perSystem = { config, pkgs, ... }: {
     treefmt = {
       projectRootFile = "flake.nix";

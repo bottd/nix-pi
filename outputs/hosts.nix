@@ -1,21 +1,19 @@
 { inputs, ... }:
 let
-  hosts = {
-    cellar = inputs.nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      specialArgs = { inherit (inputs) nixpkgs; };
-      modules = [
-        ../hosts/cellar/configuration.nix
-      ];
-    };
+  mkPi = modules: inputs.nixpkgs.lib.nixosSystem {
+    system = "aarch64-linux";
+    inherit modules;
+  };
 
-    ward = inputs.nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      specialArgs = { inherit (inputs) nixpkgs; };
-      modules = [
-        ../hosts/ward/configuration.nix
-      ];
-    };
+  hosts = {
+    cellar = mkPi [
+      inputs.nixarr.nixosModules.default
+      ../hosts/cellar/configuration.nix
+    ];
+
+    ward = mkPi [
+      ../hosts/ward/configuration.nix
+    ];
   };
 
 in
@@ -25,7 +23,6 @@ in
     packages.aarch64-linux = {
       cellar = hosts.cellar.config.system.build.sdImage;
       ward = hosts.ward.config.system.build.sdImage;
-      default = hosts.cellar.config.system.build.sdImage;
     };
   };
 }
